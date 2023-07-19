@@ -26,11 +26,29 @@ public class AntPackageAsset
             using var stream = new MemoryStream(gd.Data[i].Bytes.ToArray());
             object entry = gd.Deserialize(stream, i, gd.Data[i].BigEndian);
             if (entry is FrameAnimation frameAnim)
-                result.Add(frameAnim.ConvertToInternal());
+            {
+                Console.Write("Processing Frame Anim: "+ frameAnim.Name + "\n");
+
+                /* Highflex: stop adding if invalid */
+                if (!frameAnim.bIsInvalid)
+                    result.Add(frameAnim.ConvertToInternal());
+            }
             else if (entry is RawAnimation rawAnim)
-                result.Add(rawAnim.ConvertToInternal());
+            {
+                Console.Write("Processing Raw Anim: " + rawAnim.Name + "\n");
+
+                /* Highflex: stop adding if invalid */
+                if (!rawAnim.bIsInvalid)
+                    result.Add(rawAnim.ConvertToInternal());
+            }   
             else if (entry is DctAnimation dctAnim)
-                result.Add(dctAnim.ConvertToInternal());
+            {
+                Console.Write("Processing DCT Anim: " + dctAnim.Name + "\n");
+
+                /* Highflex: stop adding if invalid */
+                if (!dctAnim.bIsInvalid)
+                    result.Add(dctAnim.ConvertToInternal());
+            }
             //else if (entry is CurveAnimation curAnim)
             //    result.Add(curAnim.ConvertToInternal());
         }

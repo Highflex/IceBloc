@@ -184,11 +184,12 @@ public partial class MainWindow : Window
     private void MeshFormatBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (MeshFormatBox.SelectedIndex == 0)
-            Settings.CurrentModelExporter = new ModelExporterSMD();
-        if (MeshFormatBox.SelectedIndex == 1)
-            Settings.CurrentModelExporter = new ModelExporterOBJ();
-        if (MeshFormatBox.SelectedIndex == 2)
             Settings.CurrentModelExporter = new ModelExporterSEMODEL();
+        if (MeshFormatBox.SelectedIndex == 1)
+            Settings.CurrentModelExporter = new ModelExporterSMD();
+        if (MeshFormatBox.SelectedIndex == 2)
+            Settings.CurrentModelExporter = new ModelExporterOBJ();
+
     }
 
     private void TextureFormatBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -200,9 +201,9 @@ public partial class MainWindow : Window
     private void AnimationFormatBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (AnimationFormatBox.SelectedIndex == 0)
-            Settings.CurrentAnimationExporter = new AnimationExporterSMD();
-        if (AnimationFormatBox.SelectedIndex == 1)
             Settings.CurrentAnimationExporter = new AnimationExporterSEANIM();
+        if (AnimationFormatBox.SelectedIndex == 1)
+            Settings.CurrentAnimationExporter = new AnimationExporterSMD();
     }
 }
 

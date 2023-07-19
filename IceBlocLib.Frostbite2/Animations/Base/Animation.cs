@@ -1,5 +1,6 @@
 ﻿using IceBlocLib.Frostbite;
 using IceBlocLib.Utility;
+using System.Threading.Channels;
 
 namespace IceBlocLib.Frostbite2.Animations.Base;
 
@@ -20,6 +21,8 @@ public class Animation
     public StorageType StorageType;
 
     public static GenericData BasicAssets = null;
+
+    public bool bIsInvalid = false;
 
     public Animation() { }
 
@@ -68,6 +71,16 @@ public class Animation
 
         // Find the ClipControllerAsset which references the Animation.
         var clipController = BasicAssets["Anim", ID];
+
+        /* Highflex: make sure clip controller is valid otherwise return empty channels and mark anim as invalid */
+        if(clipController == null)
+        {
+            Console.Write("ERROR: Animation " + Name + " cannot resolve ClipController Asset!" + "\n");
+            bIsInvalid = true;
+            Dictionary<string, BoneChannelType> output_empty = new();
+            return output_empty;
+        }
+
         // Set FPS
         FPS = (float)clipController["FPS"];
         // Get the LayoutHierarchyAsset Guid from the ClipController.
@@ -85,6 +98,12 @@ public class Animation
                 var layoutAsset = BasicAssets[assets[i]];
 
                 string typeName = BasicAssets.Classes[BasicAssets.GetDataType(assets[i])].Name;
+
+                //string TestLayoutName = (string)layoutAsset["__name"];
+                //Console.WriteLine(TestLayoutName);
+                //if (TestLayoutName.Contains("DeltaTrajectory"))
+                    //Console.WriteLine("This is Delta Traj");
+
                 if (typeName == "LayoutAsset")
                 {
                     var entries = layoutAsset["Slots"] as Dictionary<string, object>[];
@@ -107,7 +126,10 @@ public class Animation
 
         byte[] data = (byte[])dof["IndexData"];
         List<string> channels = new();
-         
+
+
+        // Console.Write("Storage Type is: " + StorageType);
+
         switch (StorageType)
         {
             // If we overwrite the channels, then just remap the orders.
@@ -129,6 +151,7 @@ public class Animation
                 {
                     Dictionary<int, int> offsets = new();
                     int offset = 0;
+
                     for (int i = 0; i < data.Length; i+=2)
                     {
                         int appendTo = data[i];
@@ -140,6 +163,15 @@ public class Animation
                         channels.Insert(offsets[appendTo], channelNames.ElementAt(channelId).Key);
                     }
                 } break;
+        }
+
+        /* Highflex: storage type 2 aka append is currently unspported so notify user */
+        if (StorageType == StorageType.APPEND)
+        {
+            Console.Write("ERROR: Animation " + Name + " is using DOF Storage Type Append, not supported atm!" + "\n");
+            bIsInvalid = true;
+            Dictionary<string, BoneChannelType> output_empty = new();
+            return output_empty;
         }
 
         // Reorder

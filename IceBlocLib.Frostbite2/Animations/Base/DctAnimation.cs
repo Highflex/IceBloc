@@ -85,11 +85,6 @@ public partial class DctAnimation : Animation
         List<string> rotChannels = new();
         List<string> scaleChannels = new();
 
-        if (Name == "ParachuteRight Anim")
-        {
-            Console.Write("foo");
-        }
-
         // Get all names.
         foreach (var channel in Channels)
         {
@@ -102,7 +97,6 @@ public partial class DctAnimation : Animation
         }
 
         // Assign values to Channels.
-
         var dofCount = NumQuats + NumVec3 + NumFloatVec;
 
         for (int i = 0; i < KeyTimes.Length; i++)
@@ -120,6 +114,7 @@ public partial class DctAnimation : Animation
 
                 rotations.Add(Quaternion.Normalize(new Quaternion(element.X, element.Y, element.Z, element.W)));
             }
+
             // We need to differentiate between Scale and Position.
             for (int channelIdx = 0; channelIdx < NumVec3; channelIdx++)
             {
