@@ -18,7 +18,7 @@ public class AnimationExporterSEANIM : IAnimationExporter
             for (int i = 0; i < animation.Frames[frame].Positions.Count; i++)
             {
                 System.Numerics.Vector3 pos = animation.Frames[frame].Positions[i];
-                anim.AddTranslationKey(animation.PositionChannels[i], animation.Frames[frame].FrameIndex, pos.X, pos.Y, pos.Z);
+                anim.AddTranslationKey(animation.PositionChannels[i], animation.Frames[frame].FrameIndex, pos.X * 100.0f, pos.Y * 100.0f, pos.Z * 100.0f); // highflex: implement default scaling
             }
             for (int i = 0; i < animation.Frames[frame].Rotations.Count; i++)
             {

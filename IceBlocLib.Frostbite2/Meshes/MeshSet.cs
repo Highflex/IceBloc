@@ -167,6 +167,9 @@ public class MeshSet
                 meshList.Add(mesh);
             }
             stream.Close();
+
+            // Highflex: only export LOD0, do not need the rest
+            break;
         }
 
         return meshList;

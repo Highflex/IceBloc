@@ -26,7 +26,7 @@ public class SkeletonExporterSMD : ISkeletonExporter
         {
             var pos = skeleton.LocalTransforms[i].Position;
             var rot = skeleton.LocalTransforms[i].EulerAngles;
-            w.WriteLine($"{i} {pos.X} {pos.Y} {pos.Z} {rot.X.DegRad()} {rot.Y.DegRad()} {rot.Z.DegRad()}");
+            w.WriteLine($"{i} {pos.X * 100.0f} {pos.Y * 100.0f} {pos.Z * 100.0f} {rot.X.DegRad()} {rot.Y.DegRad()} {rot.Z.DegRad()}"); // Highflex: implement global scaling here
         }
 
         w.WriteLine("end");

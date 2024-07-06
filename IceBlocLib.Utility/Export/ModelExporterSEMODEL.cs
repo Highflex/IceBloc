@@ -22,9 +22,9 @@ public class ModelExporterSEMODEL : IModelExporter
         for (int i = 0; i < mesh.Vertices.Count; i++)
         {
             SEModelVertex v = new();
-            v.Position.X = mesh.Vertices[i].PositionX;
-            v.Position.Y = mesh.Vertices[i].PositionY;
-            v.Position.Z = mesh.Vertices[i].PositionZ;
+            v.Position.X = mesh.Vertices[i].PositionX * 100.0f; // Highflex implement global scaling
+            v.Position.Y = mesh.Vertices[i].PositionY * 100.0f; // Highflex implement global scaling
+            v.Position.Z = mesh.Vertices[i].PositionZ * 100.0f; // Highflex implement global scaling
             v.VertexNormal.X = mesh.Vertices[i].NormalX;
             v.VertexNormal.Y = mesh.Vertices[i].NormalY;
             v.VertexNormal.Z = mesh.Vertices[i].NormalZ;
@@ -85,8 +85,8 @@ public class ModelExporterSEMODEL : IModelExporter
         for (int i = 0; i < skeleton.BoneNames.Count; i++)
         {
             model.AddBone(skeleton.BoneNames[i], skeleton.BoneParents[i], 
-                skeleton.BoneTransforms[i].Position, skeleton.BoneTransforms[i].Rotation,
-                skeleton.LocalTransforms[i].Position, skeleton.LocalTransforms[i].Rotation,
+                skeleton.BoneTransforms[i].Position * 100.0f, skeleton.BoneTransforms[i].Rotation, // Highflex implement global scaling
+                skeleton.LocalTransforms[i].Position * 100.0f, skeleton.LocalTransforms[i].Rotation, // Highflex implement global scaling
                 new Vector3(1.0f, 1.0f, 1.0f));
         }
         int matIdx = 0;
@@ -97,7 +97,7 @@ public class ModelExporterSEMODEL : IModelExporter
             for (int i = 0; i < mesh.Vertices.Count; i++)
             {
                 SEModelVertex v = new();
-                v.Position = new(mesh.Vertices[i].PositionX, mesh.Vertices[i].PositionY, mesh.Vertices[i].PositionZ);
+                v.Position = new(mesh.Vertices[i].PositionX * 100.0f, mesh.Vertices[i].PositionY * 100.0f, mesh.Vertices[i].PositionZ * 100.0f); // Highflex implement global scaling
                 v.VertexNormal = new(mesh.Vertices[i].NormalX, mesh.Vertices[i].NormalY, mesh.Vertices[i].NormalZ);
                 v.VertexColor = new Color(255, 255, 255, 255);
                 v.UVSets.Add(new Vector2(mesh.Vertices[i].TexCoordX, 1.0f - mesh.Vertices[i].TexCoordY));
