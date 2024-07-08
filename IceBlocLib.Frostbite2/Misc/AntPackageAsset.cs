@@ -1,5 +1,6 @@
 ﻿using IceBlocLib.Frostbite2.Animations.Base;
 using IceBlocLib.InternalFormats;
+using IceBlocLib.Utility;
 
 namespace IceBlocLib.Frostbite2.Misc;
 
@@ -51,6 +52,26 @@ public class AntPackageAsset
             }
             //else if (entry is CurveAnimation curAnim)
             //    result.Add(curAnim.ConvertToInternal());
+        }
+        return result;
+    }
+
+    public static List<AssetBankAnimItem> GetAssetBankAnimInfoData(Stream chunk)
+    {
+        List<AssetBankAnimItem> result = new();
+        GenericData gd = new(chunk);
+
+        for (int i = 0; i < gd.Data.Count; i++)
+        {
+            using var stream = new MemoryStream(gd.Data[i].Bytes.ToArray());
+            object entry = gd.DeserializeAnimPreview(stream, i, gd.Data[i].BigEndian);
+
+            /* cast to global anim class to grab the info! */
+            if (entry is AnimationPreview Anim)
+            {
+                AssetBankAnimItem CurrentAnim = new AssetBankAnimItem(Anim.Name, Anim.CodecFormat);
+                result.Add(CurrentAnim);
+            }
         }
         return result;
     }

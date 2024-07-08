@@ -10,7 +10,13 @@
     <TabControl>
         <TabItem Header="Asset List">
             <Grid Background="#FFE5E5E5">
-                <DataGrid x:Name="AssetGrid" d:ItemsSource="{d:SampleData ItemCount=60}" SelectionChanged="DataGrid_SelectionChanged" VerticalAlignment="Top" Margin="0,0,0,30" IsReadOnly="True"/>
+                <DataGrid x:Name="AssetGrid" d:ItemsSource="{d:SampleData ItemCount=60}" SelectionChanged="DataGrid_SelectionChanged" VerticalAlignment="Top" Margin="0,0,0,30" IsReadOnly="True" ContextMenuOpening="AssetGrid_ContextMenuOpening">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu x:Name="AssetContextMenu">
+                            <MenuItem x:Name="AssetMenuItem" Header="Open Asset Inspector" Click="OpenAssetInspector"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
                 <Button x:Name="LoadInstall" Content="Load Game" HorizontalAlignment="Right" Margin="0,0,10,2" VerticalAlignment="Bottom" Click="LoadInstall_Click" Height="25"/>
                 <Button x:Name="ExportAsset" Content="Export Selection" HorizontalAlignment="Right" Margin="0,0,79,2" VerticalAlignment="Bottom" Height="25" Click="ExportAsset_Click"/>
                 <Label x:Name="LoadedAssets" Content="Loaded Assets: 0" HorizontalAlignment="Left" Margin="310,0,0,0" VerticalAlignment="Bottom" FontWeight="Normal"/>

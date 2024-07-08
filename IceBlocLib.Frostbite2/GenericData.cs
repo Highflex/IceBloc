@@ -195,6 +195,21 @@ public class GenericData
         return deserializedData;
     }
 
+    public object DeserializeAnimPreview(Stream stream, int index, bool bigEndian)
+    {
+        using var r = new BinaryReader(stream);
+
+        r.ReadGdDataHeader(bigEndian, out uint hash, out uint type, out uint baseOffset);
+        r.BaseStream.Position = 0;
+
+        object deserializedData = null;
+
+        GenericData gd = this;
+
+        deserializedData = new AnimationPreview(r.BaseStream, index, ref gd, bigEndian, gd.Classes[type].Name);
+        return deserializedData;
+    }
+
     public Dictionary<string, object> ReadValues(BinaryReader r, int index, uint baseOffset, uint type, bool bigEndian)
     {
         Dictionary<string, object> data = new();

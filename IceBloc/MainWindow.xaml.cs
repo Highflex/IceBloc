@@ -12,6 +12,8 @@ using IceBlocLib.Utility;
 using IceBlocLib;
 using System.Linq;
 using IceBlocLib.Utility.Export;
+using System.Windows.Input;
+using System.Diagnostics;
 
 namespace IceBloc;
 
@@ -83,6 +85,54 @@ public partial class MainWindow : Window
     #endregion
 
     #region UI
+
+    private void AssetGrid_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+    {
+        /* only consider first selection */
+        foreach (AssetListItem selected in Instance.AssetGrid.SelectedItems)
+        {
+            //Console.WriteLine(selected.Name);
+            //Console.WriteLine(selected.Type);
+
+            if (selected.Type == "AssetBank")
+            {
+                AssetMenuItem.Header = $"Open Asset Bank Browser"; // Update with the desired property
+                Debug.WriteLine($"Context menu updated");
+            }
+            else
+            {
+                AssetMenuItem.Header = "Open Asset Inspector"; // Default text
+                Debug.WriteLine("Context menu default text set.");
+            }
+
+            break;
+        }
+    }
+
+    private void OpenAssetInspector(object sender, RoutedEventArgs e)
+    {
+        /* only consider first selection */ 
+        foreach (AssetListItem selected in Instance.AssetGrid.SelectedItems)
+        {
+            //Console.WriteLine(selected.Name);
+            //Console.WriteLine(selected.Type);
+
+            // Open Asset Bank Browser if requested....
+            if (selected.Type == "AssetBank")
+            {
+                // Create and show the new window
+                AssetBankBrowser AssetBankBrowserWindow = new AssetBankBrowser(selected);
+                AssetBankBrowserWindow.Show();
+            }
+
+            break;
+        }
+    }
+
+    /// <summary>
+    /// ///////////////////////////////////////////////////////////////////////
+    /// </summary>
+
 
     public static void UpdateItems()
     {
